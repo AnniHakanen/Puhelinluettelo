@@ -29,22 +29,22 @@ let persons = [
   }
 ]
 // ROUTES
-app.get('/', (req, res) => {
-  res.send('<h1>Hello World!</h1>')
+app.get('/', (request, response) => {
+  response.send('<h1>Hello World!</h1>')
 })
 
-app.get('/api/persons', (req, res) => {
-  res.json(persons)
+app.get('/api/persons', (request, response) => {
+  response.json(persons)
 })
 
-app.get('/info', (req, res) => {
+app.get('/info', (request, response) => {
   const personCount = persons.length
   // console.log(personCount)
   const time = new Date()
   const info = '<div> <p> Puhelinluettelossa on ' + personCount +
     '  henkilön tiedot. </p> <p> ' + time + '</p></div>'
   // console.log(time)
-  res.send(info)
+  response.send(info)
 })
 
 app.get('/persons/:id', (request, response) => {
@@ -60,6 +60,13 @@ app.get('/persons/:id', (request, response) => {
     response.status(404).end()
   }
 // console.log(person)
+})
+
+app.delete('/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  persons = persons.filter(person => person.id !== id)
+
+  response.status(204).end()
 })
 
 const PORT = 3001
