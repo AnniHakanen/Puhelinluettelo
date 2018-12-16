@@ -28,13 +28,42 @@ let persons = [
     id: 5
   }
 ]
-
+// ROUTES
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
 
 app.get('/api/persons', (req, res) => {
   res.json(persons)
+})
+
+app.get('/info', (req, res) => {
+  const personCount = persons.length
+  console.log(personCount)
+
+  const time = new Date()
+
+  const info = '<div> <p> Puhelinluettelossa on ' + personCount +
+    '  henkilön tiedot. </p> <p> ' + time + '</p></div>'
+  console.log(time)
+  res.send(info)
+})
+
+app.get('/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  // console.log(id)
+
+  // const person = persons.find(person => {
+  //   console.log(person.id, typeof person.id, typeof id, person.id === id)
+  //   return person.id === id})
+
+  const person = persons.find(person => person.id === id)
+  if (person) {
+    response.json(person)
+  } else {
+    response.status(404).end()
+  }
+// console.log(person)
 })
 
 const PORT = 3001
