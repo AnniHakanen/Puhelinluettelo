@@ -85,7 +85,7 @@ app.post('/api/persons', (request, response) => {
   }
   const result = persons.find(person => person.name.toLowerCase === body.name.toLowerCase)
   if (result !== undefined) {
-    return response.status(400).json({error: 'Name is allready on the PhoneBook'})
+    return response.status(400).json({error: 'Name is already on the PhoneBook'})
   }else {
     const person = {
       name: body.name,
