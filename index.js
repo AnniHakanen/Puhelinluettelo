@@ -64,13 +64,11 @@ app.get('/api/persons/:id', (request, response) => {
 // console.log(person)
 })
 
-app.delete('/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter(person => person.id !== id)
-
   response.status(204).end()
 })
-
 const PORT = 3001
 const time = new Date()
 app.listen(PORT, () => {
@@ -78,12 +76,30 @@ app.listen(PORT, () => {
 })
 
 app.post('/api/persons', (request, response) => {
-  const personID = Math.floor(Math.random() * 1000 + 1)
-  const person = request.body
-  person.id = personID
-  persons = persons.concat(person)
+  const body = request.body
+  if (body.name === undefined || body.name === '') {
+    return response.status(400).json({error: 'Name missing'})
+  }
+  if (body.number === undefined || body.number === '') {
+    return response.status(400).json({error: 'Number missing'})
+  }
+  const result = persons.find(person => person.name.toLowerCase === body.name.toLowerCase)
+  if (result !== undefined) {
+    return response.status(400).json({error: 'Name is allready on the PhoneBook'})
+  }else {
+    const person = {
+      name: body.name,
+      number: body.number,
+      id: generateId()
+    }
 
-  console.log(person)
+    persons = persons.concat(person)
 
-  response.json(person)
+    console.log(person)
+
+    response.json(person)}
 })
+const generateId = () => {
+  const personID = Math.floor(Math.random() * 1000 + 1)
+  return (personID)
+}
