@@ -2,6 +2,11 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
+// Loggaus konsoliin
+const morgan = require('morgan')
+app.use(morgan('tiny'))
+// app.use(morgan('common'))
+// app.use(morgan('combined'))
 
 let persons = [
   {
@@ -30,6 +35,7 @@ let persons = [
     id: 5
   }
 ]
+
 // ROUTES
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -103,3 +109,9 @@ const generateId = () => {
   const personID = Math.floor(Math.random() * 1000 + 1)
   return (personID)
 }
+
+const error = (request, response) => {
+  response.status(404).send({error: 'unknown endpoint'})
+}
+
+app.use(error)
