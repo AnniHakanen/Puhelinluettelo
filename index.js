@@ -4,10 +4,11 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 // Loggaus konsoliin
 const morgan = require('morgan')
-app.use(morgan('tiny'))
+// app.use(morgan('tiny'))
 // app.use(morgan('common'))
 // app.use(morgan('combined'))
-
+morgan.token('body', function (req, res) {return JSON.stringify(req.body)})
+app.use(morgan('Method \: :method Url\: :url Body\: :body Status\: :status Date\: :date ResponseTime\: :response-time[4] ms'))
 let persons = [
   {
     name: 'Arto Hellas',
